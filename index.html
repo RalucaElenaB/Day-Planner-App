@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planner Zilnic</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <h1><i class="fa-regular fa-calendar-days"></i> Planner Zilnic</h1>
+      <div class="controls">
+        <button id="prev-month">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <span id="month-year"></span>
+        <button id="next-month">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <button id="today-btn"><i class="fa-solid fa-house"></i> Azi</button>
+
+        <button id="dark-mode-btn"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </header>
+
+    <main>
+      <div id="calendar"></div>
+      <aside id="reminder-panel">
+        <h3>Mementouri pentru azi</h3>
+        <ul id="reminder-list"></ul>
+      </aside>
+    </main>
+
+    <!-- Modal pentru zi selectată -->
+    <div id="day-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2 id="selected-date"></h2>
+
+        <div id="task-container"></div>
+
+        <div class="task-input">
+          <input type="time" id="task-time" />
+          <input type="text" id="task-text" placeholder="Descriere task" />
+
+          <!-- Dropdown pentru recurență -->
+          <select id="task-repeat">
+            <option value="none">Nu se repetă</option>
+            <option value="daily">Zilnic</option>
+            <option value="weekly">Săptămânal</option>
+            <option value="monthly">Lunar</option>
+          </select>
+
+          <!-- Dropdown pentru prioritate -->
+          <select id="task-priority">
+            <option value="low">Prioritate mică</option>
+            <option value="medium" selected>Prioritate medie</option>
+            <option value="high">Prioritate mare</option>
+          </select>
+
+          <button id="add-task-btn">
+            <i class="fa-solid fa-plus"></i> Adaugă
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <div id="popup-reminder" class="popup-reminder"></div>
+  </body>
+</html>

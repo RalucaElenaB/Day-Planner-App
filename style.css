@@ -1,0 +1,349 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f9;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  background: #4a90e2;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controls button {
+  background: #357ab7;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.controls button:hover {
+  background: #285a8a;
+}
+
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.day {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px 0;
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+}
+
+.day:hover {
+  background: #e0f0ff;
+}
+
+.task-count {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: #4a90e2;
+  color: white;
+  font-size: 0.8rem;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#task-container {
+  margin-bottom: 15px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f0f0f0;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.task-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 1rem;
+}
+
+.task-actions .edit {
+  color: #4a90e2;
+}
+
+.task-actions .delete {
+  color: #e74c3c;
+}
+
+.task-input {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap; /* lasă să treacă pe alt rând dacă nu încape */
+  margin-top: 10px;
+}
+
+.task-input input[type="time"],
+.task-input input[type="text"] {
+  flex: 1;
+  padding: 5px;
+}
+
+.task-input button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.task-input button:hover {
+  background: #357ab7;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+
+body.dark-mode header {
+  background: #222;
+}
+
+body.dark-mode .day {
+  background: #1e1e1e;
+  color: #ccc;
+}
+
+body.dark-mode .modal-content {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+body.dark-mode .task-item {
+  background: #2a2a2a;
+}
+
+body.dark-mode .task-count {
+  background: #f39c12;
+}
+
+.task-item.done {
+  text-decoration: line-through;
+  color: green;
+}
+
+.task-item.canceled {
+  color: red;
+  opacity: 0.7;
+}
+
+.task-item.todo {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.task-item select {
+  margin-left: 10px;
+  padding: 2px;
+}
+
+#reminder-panel {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#reminder-panel h3 {
+  margin-top: 0;
+  color: #4a90e2;
+}
+
+#reminder-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* #reminder-list li {
+  background: #f0f0f0;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+} */
+
+#reminder-list li {
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Verde pentru Făcut */
+.status-done {
+  background-color: #28a745;
+}
+
+/* Albastru pentru De făcut */
+.status-todo {
+  background-color: #007bff;
+}
+
+/* Galben pentru În lucru */
+.status-progress {
+  background-color: #ffc107;
+  color: black; /* text mai vizibil pe galben */
+}
+
+/* Negru (gri închis) pentru Anulat */
+.status-canceled {
+  background-color: #4f5357;
+}
+
+body.dark-mode #reminder-panel {
+  background: #1e1e1e;
+  color: #ddd;
+}
+
+body.dark-mode #reminder-list li {
+  background: #2a2a2a;
+}
+
+.popup-reminder {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #4a90e2;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  width: 300px;
+  font-size: 1rem;
+}
+
+.popup-reminder.show {
+  display: block;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/*CSS Memento*/
+.popup-buttons button {
+  background: white;
+  color: #4a90e2;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.popup-buttons button:hover {
+  background: #eee;
+}
+
+/* Culori pentru prioritate (doar pentru status "De făcut") */
+.priority-low {
+  border-left: 5px solid #28a745; /* verde */
+}
+
+.priority-medium {
+  border-left: 5px solid #ffc107; /* galben */
+}
+
+.priority-high {
+  border-left: 5px solid #dc3545; /* roșu */
+}
+
+/*Azi button*/
+#today-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#today-btn:hover {
+  background: #1e7e34;
+}
