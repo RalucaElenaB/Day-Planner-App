@@ -73,11 +73,21 @@ closeBtn.addEventListener("click", () => {
 });
 
 // Afișează taskurile
+const taskFilter = document.getElementById("task-filter");
+
 function showTasks() {
   taskContainer.innerHTML = "";
   const dayTasks = tasks[selectedDate] || [];
 
-  dayTasks.forEach((task, index) => {
+  const filterValue = taskFilter.value;
+
+  // Filtrăm taskurile în funcție de status
+  const filteredTasks = dayTasks.filter((task) => {
+    if (filterValue === "all") return true;
+    return task.status === filterValue;
+  });
+
+  filteredTasks.forEach((task, index) => {
     const taskDiv = document.createElement("div");
     taskDiv.classList.add("task-item");
 
@@ -159,6 +169,9 @@ function showTasks() {
     taskContainer.appendChild(taskDiv);
   });
 }
+
+// Reafișează lista când utilizatorul schimbă filtrul
+taskFilter.addEventListener("change", showTasks);
 
 // Adaugă task nou
 addTaskBtn.addEventListener("click", () => {
@@ -335,4 +348,121 @@ todayBtn.addEventListener("click", () => {
     currentDate.getMonth() + 1
   }-${currentDate.getDate()}`;
   openDayModal(todayKey, currentDate.getDate());
+});
+
+//Delete all Tasks
+const resetDayBtn = document.getElementById("reset-day-btn");
+
+resetDayBtn.addEventListener("click", () => {
+  if (!selectedDate) return;
+  const confirmReset = confirm(
+    `Sigur vrei să ștergi toate task-urile din ziua ${selectedDate}?`
+  );
+  if (confirmReset) {
+    delete tasks[selectedDate]; // ștergem toate taskurile din acea zi
+    saveTasks(); // salvăm în localStorage
+    showTasks(); // golim lista din modal
+    renderCalendar(); // actualizăm calendarul (badge-urile dispar)
+  }
+});
+
+//Statitici
+function updateStats() {
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
+
+  let todayTotal = 0,
+    todayDone = 0;
+  let weekTotal = 0,
+    weekDone = 0;
+  let monthTotal = 0,
+    monthDone = 0;
+
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - 7);
+
+  Object.keys(tasks).forEach((dateKey) => {
+    const [y, m, d] = dateKey.split("-").map(Number);
+    const taskDate = new Date(y, m - 1, d);
+
+    const isToday = dateKey === todayKey;
+    const isThisWeek = taskDate >= weekStart && taskDate <= today;
+    const isThisMonth = y === today.getFullYear() && m === today.getMonth() + 1;
+
+    tasks[dateKey].forEach((task) => {
+      if (isToday) {
+        todayTotal++;
+        if (task.status === "done") todayDone++;
+      }
+      if (isThisWeek) {
+        weekTotal++;
+        if (task.status === "done") weekDone++;
+      }
+      if (isThisMonth) {
+        monthTotal++;
+        if (task.status === "done") monthDone++;
+      }
+    });
+  });
+
+  // Actualizăm textul
+  document.getElementById(
+    "stats-today"
+  ).textContent = `Azi: ${todayDone} din ${todayTotal} task-uri făcute`;
+  document.getElementById(
+    "stats-week"
+  ).textContent = `Ultima săptămână: ${weekDone} din ${weekTotal}`;
+  document.getElementById(
+    "stats-month"
+  ).textContent = `Luna aceasta: ${monthDone} din ${monthTotal}`;
+
+  // Progress bar
+  const percent = todayTotal > 0 ? (todayDone / todayTotal) * 100 : 0;
+  document.getElementById("progress-bar").style.width = `${percent}%`;
+}
+
+// Actualizează statisticile la fiecare 10 secunde (când se actualizează și panoul)
+setInterval(() => {
+  updateReminderPanel();
+  updateStats();
+}, 10000);
+
+updateStats(); // la încărcarea paginii
+
+//Exporta task-urile dintr-o zi
+const exportDayBtn = document.getElementById("export-day-btn");
+
+exportDayBtn.addEventListener("click", () => {
+  if (
+    !selectedDate ||
+    !tasks[selectedDate] ||
+    tasks[selectedDate].length === 0
+  ) {
+    alert("Nu există task-uri pentru această zi!");
+    return;
+  }
+
+  // Creăm textul de export
+  let content = `Task-uri pentru ziua ${selectedDate}\n\n`;
+  tasks[selectedDate].forEach((task) => {
+    const statusLabel =
+      task.status === "done"
+        ? "Făcut"
+        : task.status === "canceled"
+        ? "Anulat"
+        : task.status === "in_progress"
+        ? "În lucru"
+        : "De făcut";
+
+    content += `${task.time} - ${task.text} [${statusLabel}]\n`;
+  });
+
+  // Creăm un fișier și forțăm descărcarea
+  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `taskuri-${selectedDate}.txt`;
+  link.click();
 });

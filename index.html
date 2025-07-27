@@ -36,6 +36,18 @@
       </aside>
     </main>
 
+    <!-- Statistici -->
+    <aside id="stats-panel">
+      <h3>Statistici</h3>
+      <p id="stats-today"></p>
+      <p id="stats-week"></p>
+      <p id="stats-month"></p>
+      <p>Progres azi:</p>
+      <div id="progress-container">
+        <div id="progress-bar"></div>
+      </div>
+    </aside>
+
     <!-- Modal pentru zi selectată -->
     <div id="day-modal" class="modal">
       <div class="modal-content">
@@ -66,6 +78,24 @@
           <button id="add-task-btn">
             <i class="fa-solid fa-plus"></i> Adaugă
           </button>
+
+          <button id="reset-day-btn" class="reset-day">
+            Șterge toate task-urile
+          </button>
+
+          <!--Filtrare task-uri dupa un anumit status-->
+          <select id="task-filter">
+            <option value="all">Toate</option>
+            <option value="to_do">De făcut</option>
+            <option value="in_progress">În lucru</option>
+            <option value="done">Făcute</option>
+            <option value="canceled">Anulate</option>
+          </select>
+
+          <!--Exporta task-urile dintr-o zi-->
+          <button id="export-day-btn">
+            <i class="fa-solid fa-file-export"></i> Exportă ziua
+          </button>
         </div>
       </div>
     </div>
@@ -73,5 +103,9 @@
     <script src="script.js"></script>
 
     <div id="popup-reminder" class="popup-reminder"></div>
+
+    <footer id="app-footer">
+      <p>Proiect realizat de [Numele Tău] în cadrul internshipului</p>
+    </footer>
   </body>
 </html>
